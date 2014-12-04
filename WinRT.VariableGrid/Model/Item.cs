@@ -8,11 +8,12 @@ using System.Threading.Tasks;
 
 namespace WinRT.VariableGrid.Model
 {
-    public class Item : INotifyPropertyChanged
+    public class Item : INotifyPropertyChanged, IVariableGridViewItem
     {
         private string _name;
         private string _color;
-        private double _size;
+        private int _width;
+        private int _height;
 
         public string Name
         {
@@ -25,11 +26,17 @@ namespace WinRT.VariableGrid.Model
             get { return _color; }
             set { SetProperty(ref _color, value); }
         }
-
-        public double Size
+        
+        public int Width
         {
-            get { return _size; }
-            set { SetProperty(ref _size, value); }
+            get { return _width; }
+            set { SetProperty(ref _width, value); }
+        }
+
+        public int Height
+        {
+            get { return _height; }
+            set { SetProperty(ref _height, value); }
         }
 
         #region INotifyPropertyChanged

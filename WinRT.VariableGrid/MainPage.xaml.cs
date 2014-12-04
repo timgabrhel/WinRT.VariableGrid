@@ -34,30 +34,16 @@ namespace WinRT.VariableGrid
 
         void MainPage_Loaded(object sender, RoutedEventArgs e)
         {
-            // Initialize the item sizes now, and subscribe to orientation changed
-            SetGridViewItemSize();
             DisplayInformation.GetForCurrentView().OrientationChanged += OnOrientationChanged;
         }
 
         private void OnOrientationChanged(DisplayInformation sender, object args)
         {
-            SetGridViewItemSize();
-        }
-
-        private void SetGridViewItemSize()
-        {
-            // depending on the orientation, pass the appropriate resource into the Measure method.
-            // The databinding will change each items size.
-
-            var viewModel = (DataContext as MainViewModel);
-
-            if (DisplayInformation.GetForCurrentView().CurrentOrientation == DisplayOrientations.Portrait)
+            var vm = DataContext as MainViewModel;
+            if (vm != null)
             {
-                viewModel.Measure((double)Application.Current.Resources["GridViewItemPortrait"]);
-            }
-            else
-            {
-                viewModel.Measure((double)Application.Current.Resources["GridViewItemLandscape"]);
+                vm.RemeasureItems();
+                //PivotListings.Measure(new Size(PivotListings.ActualWidth, PivotListings.ActualHeight));
             }
         }
 

@@ -6,6 +6,8 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.ApplicationModel.Core;
+using Windows.Foundation;
 using WinRT.VariableGrid.Model;
 
 namespace WinRT.VariableGrid.ViewModel
@@ -33,14 +35,42 @@ namespace WinRT.VariableGrid.ViewModel
                     Color = String.Format("#FF{0:X6}", random.Next(0x1000000))
                 });
             }
+
+            RemeasureItems();
+        }
+        
+        /// <summary>
+        /// Enumerates over each item, and re-runs the logic to determine the dynamic sizes of the items
+        /// </summary>
+        public void RemeasureItems()
+        {
+            for (int i = 1; i <= Items.Count; i++)
+            {
+                var item = Items[i - 1];
+                MeasureItem(item, i);
+                Items[i - 1] = item;
+            }
         }
 
-        public void Measure(double size)
+        /// <summary>
+        /// Given an Item and index, dynamically sets the items width and height
+        /// </summary>
+        /// <param name="item"></param>
+        /// <param name="i"></param>
+        public void MeasureItem(Item item, int i)
         {
-            for (int i = 0; i < Items.Count; i++)
+            var width = (CoreApplication.MainView.CoreWindow.Bounds.Width / 2);
+            var height = width * 0.7941176470588235;
+
+            Size size = new Size(width, height);
+
+            item.Width = (int)size.Width;
+            item.Height = (int)size.Height;
+
+            if ((i % 5) == 0)
             {
-                var item = Items[i];
-                item.Size = size;
+                item.Width = (int)size.Width * 2;
+                //item.Height = (int)size.Height * 2;
             }
         }
 

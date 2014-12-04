@@ -1,12 +1,12 @@
-﻿<Page
-    x:Class="WinRT.VariableGrid.MainPage"
-    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:WinRT.VariableGrid"
-    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:viewModel="using:WinRT.VariableGrid.ViewModel"
-    mc:Ignorable="d"
+﻿<Page x:Class="WinRT.VariableGrid.MainPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:local="using:WinRT.VariableGrid"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:viewModel="using:WinRT.VariableGrid.ViewModel"
+      xmlns:controls="using:WinRT.VariableGrid.Controls"
+      mc:Ignorable="d"
       Background="Cyan">
 
     <Page.DataContext>
@@ -17,7 +17,7 @@
         <Style x:Key="GridViewItemContainer"
                TargetType="GridViewItem">
             <Setter Property="Margin"
-                    Value="5" />
+                    Value="0 0 0 0" />
             <Setter Property="BorderThickness"
                     Value="0" />
             <Setter Property="HorizontalAlignment"
@@ -27,13 +27,27 @@
         </Style>
     </Page.Resources>
 
-    <Grid Margin="5">
-        <GridView ItemsSource="{Binding Items}"
-                  ItemContainerStyle="{StaticResource GridViewItemContainer}">
-            <GridView.ItemTemplate>
+    <Grid Margin="0">
+        <controls:VariableGridView HorizontalAlignment="Center"
+                                   ItemsSource="{Binding Items}"
+                                   ItemContainerStyle="{StaticResource GridViewItemContainer}">
+            <controls:VariableGridView.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <VariableSizedWrapGrid Orientation="Horizontal"
+                                           ItemWidth="1"
+                                           ItemHeight="1">
+                        <VariableSizedWrapGrid.ChildrenTransitions>
+                            <TransitionCollection>
+                                <EntranceThemeTransition />
+                            </TransitionCollection>
+                        </VariableSizedWrapGrid.ChildrenTransitions>
+                    </VariableSizedWrapGrid>
+                </ItemsPanelTemplate>
+            </controls:VariableGridView.ItemsPanel>
+            <controls:VariableGridView.ItemTemplate>
                 <DataTemplate>
-                    <Grid Width="{Binding Size}"
-                          Height="{Binding Size}">
+                    <Grid Width="{Binding Width}"
+                          Height="{Binding Height}">
                         <Grid.Background>
                             <SolidColorBrush Color="{Binding Color}" />
                         </Grid.Background>
@@ -47,7 +61,7 @@
                                    Style="{StaticResource TitleTextBlockStyle}" />
                     </Grid>
                 </DataTemplate>
-            </GridView.ItemTemplate>
-        </GridView>
+            </controls:VariableGridView.ItemTemplate>
+        </controls:VariableGridView>
     </Grid>
 </Page>
