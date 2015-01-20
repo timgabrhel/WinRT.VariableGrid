@@ -34,8 +34,8 @@
             <controls:VariableGridView.ItemsPanel>
                 <ItemsPanelTemplate>
                     <VariableSizedWrapGrid Orientation="Horizontal"
-                                           ItemWidth="{Binding BaseItemWidth}"
-                                           ItemHeight="{Binding BaseItemHeight}">
+                                           ItemWidth="1"
+                                           ItemHeight="1">
                         <VariableSizedWrapGrid.ChildrenTransitions>
                             <TransitionCollection>
                                 <EntranceThemeTransition />
@@ -46,8 +46,8 @@
             </controls:VariableGridView.ItemsPanel>
             <controls:VariableGridView.ItemTemplate>
                 <DataTemplate>
-                    <Grid Width="{Binding ActualWidth}"
-                          Height="{Binding ActualHeight}">
+                    <Grid Width="{Binding Width}"
+                          Height="{Binding Height}">
                         <Grid.Background>
                             <SolidColorBrush Color="{Binding Color}" />
                         </Grid.Background>
