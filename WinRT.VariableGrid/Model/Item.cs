@@ -5,15 +5,29 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.ApplicationModel.Core;
+using Windows.Foundation;
 
 namespace WinRT.VariableGrid.Model
 {
     public class Item : INotifyPropertyChanged, IVariableGridViewItem
     {
+#if WINDOWS_PHONE_APP
+        public static readonly double BaseWidth = (CoreApplication.MainView.CoreWindow.Bounds.Width / 4);
+        public static readonly double BaseHeight = BaseWidth;
+#else
+        public static readonly double BaseHeight = (CoreApplication.MainView.CoreWindow.Bounds.Height / 10);
+        public static readonly double BaseWidth = BaseHeight;
+#endif
+
+        public static readonly Size SmallSize = new Size(1, 1);
+        public static readonly Size MediumSize = new Size(2, 2);
+        public static readonly Size LargeSize = new Size(4, 2);
+        public static readonly Size ExtraLargeSize = new Size(4, 4);
+
         private string _name;
         private string _color;
-        private int _width;
-        private int _height;
+        private Size _displaySize;
 
         public string Name
         {
@@ -26,17 +40,21 @@ namespace WinRT.VariableGrid.Model
             get { return _color; }
             set { SetProperty(ref _color, value); }
         }
-        
-        public int Width
+
+        public int ActualWidth
         {
-            get { return _width; }
-            set { SetProperty(ref _width, value); }
+            get { return (int)(SpanSize.Width * BaseWidth); }
         }
 
-        public int Height
+        public int ActualHeight
         {
-            get { return _height; }
-            set { SetProperty(ref _height, value); }
+            get { return (int)(SpanSize.Height * BaseHeight); }
+        }
+
+        public Size SpanSize
+        {
+            get { return _displaySize; }
+            set { SetProperty(ref _displaySize, value); }
         }
 
         #region INotifyPropertyChanged
