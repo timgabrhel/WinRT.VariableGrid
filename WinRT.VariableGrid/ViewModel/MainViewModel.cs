@@ -6,6 +6,8 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
+using Windows.ApplicationModel;
 using Windows.ApplicationModel.Core;
 using Windows.Foundation;
 using WinRT.VariableGrid.Model;
@@ -22,8 +24,14 @@ namespace WinRT.VariableGrid.ViewModel
             set { SetProperty(ref _items, value); }
         }
 
+        public double BaseItemWidth { get { return Item.BaseWidth; } }
+
+        public double BaseItemHeight { get { return Item.BaseHeight; } }
+        
         public MainViewModel()
         {
+            if (DesignMode.DesignModeEnabled) return;
+
             Items = new ObservableCollection<Item>();
 
             var random = new Random();
@@ -38,7 +46,7 @@ namespace WinRT.VariableGrid.ViewModel
 
             RemeasureItems();
         }
-        
+
         /// <summary>
         /// Enumerates over each item, and re-runs the logic to determine the dynamic sizes of the items
         /// </summary>
@@ -59,21 +67,14 @@ namespace WinRT.VariableGrid.ViewModel
         /// <param name="i"></param>
         public void MeasureItem(Item item, int i)
         {
-            var width = (CoreApplication.MainView.CoreWindow.Bounds.Width / 2);
-            var height = width * 0.7941176470588235;
-
-            Size size = new Size(width, height);
-
-            item.Width = (int)size.Width;
-            item.Height = (int)size.Height;
+            item.SpanSize = Item.MediumSize;
 
             if ((i % 5) == 0)
             {
-                item.Width = (int)size.Width * 2;
-                //item.Height = (int)size.Height * 2;
+                item.SpanSize = Item.LargeSize;
             }
         }
-
+        
         #region INotifyPropertyChanged
         public event PropertyChangedEventHandler PropertyChanged;
 
