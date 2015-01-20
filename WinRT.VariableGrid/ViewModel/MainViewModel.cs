@@ -22,6 +22,10 @@ namespace WinRT.VariableGrid.ViewModel
             set { SetProperty(ref _items, value); }
         }
 
+        public double BaseItemWidth { get { return Item.BaseWidth; } }
+
+        public double BaseItemHeight { get { return Item.BaseHeight; } }
+
         public MainViewModel()
         {
             Items = new ObservableCollection<Item>();
@@ -59,18 +63,11 @@ namespace WinRT.VariableGrid.ViewModel
         /// <param name="i"></param>
         public void MeasureItem(Item item, int i)
         {
-            var width = (CoreApplication.MainView.CoreWindow.Bounds.Width / 2);
-            var height = width * 0.7941176470588235;
-
-            Size size = new Size(width, height);
-
-            item.Width = (int)size.Width;
-            item.Height = (int)size.Height;
+            item.SpanSize = Item.MediumSize;
 
             if ((i % 5) == 0)
             {
-                item.Width = (int)size.Width * 2;
-                //item.Height = (int)size.Height * 2;
+                item.SpanSize = Item.LargeSize;
             }
         }
 
